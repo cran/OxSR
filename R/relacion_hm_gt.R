@@ -5,7 +5,7 @@
 #'
 #' @param data A data.frame containing the input data, where the first column should be the wavelength and the remaining columns should contain the reflectance data of the sample.
 #' @param points_smoothing The number of points used for smoothing the data to reduce noise in the spectral readings. The default value is 0.3.
-#' @param hm_gt_limits A list containing the detection range values for hematite (hm) and goethite (gt). The default is `list(hem = c(535, 585), gt = c(430, 460))`.
+#' @param hm_gt_limits A list containing the detection range values for hematite (hm) and goethite (gt). The default is `list(hm = c(535, 585), gt = c(430, 460))`.
 #' @param name_wave The name of the wavelength column in the data. By default, it is set to 'wave'.
 #' @param plot A logical value indicating whether to generate a plot of the results. If set to TRUE, a plot will be displayed; if FALSE, no plot will be shown.
 #' @param pv_tolerance A numeric vector with 4 elements, each corresponding to one of the limits for hematite (hm) and goethite (gt). This value specifies the tolerance for the point values in the calculation, helping to account for small variations in the data and controlling the precision of the calculation.
@@ -38,7 +38,7 @@ relation_hm_gt <- function(data = data,
                            points_smoothing = 0.3,
                            hm_gt_limits = list(hm = c(535,585),
                                           gt = c(430,460)),
-                           pv_tolerance =  c(1,1,1,1),
+                           pv_tolerance =  c(0,0,0,0),
                            name_wave = "wave",
                            plot = FALSE) {
   # Data input
@@ -104,7 +104,7 @@ relation_hm_gt <- function(data = data,
   result_list <- list()
   result_listdt <- list()
 
-    for (i in 2:length(resultados_df)) {
+  for (i in 2:length(resultados_df)) {
 
       min_gt <- min(resultados_df[resultados_df[[1]] >= (415 - pv_tolerance[1]) & resultados_df[[1]] <= (425 + pv_tolerance[1]), i], na.rm = TRUE)
       max_gt <- max(resultados_df[resultados_df[[1]] >= (440 - pv_tolerance[2]) & resultados_df[[1]] <= (450 + pv_tolerance[2]), i], na.rm = TRUE)
@@ -114,16 +114,16 @@ relation_hm_gt <- function(data = data,
       result_list[[i - 1]] <- data.frame(samples = colnames(resultados_df)[i], min_gt, max_gt, min_hm, max_hm)
 
       #
-      min_gtdt <- resultados_df[resultados_df[[1]] >= 415 & resultados_df[[1]] <= 425, c(1,i)]
+      min_gtdt <- resultados_df[resultados_df[[1]] >= (415 - pv_tolerance[1]) & resultados_df[[1]] <= (425 + pv_tolerance[1]), c(1,i)]
       line_gtmin <- min_gtdt[which.min(min_gtdt[[2]]), ]
 
-      max_gtdt <- resultados_df[resultados_df[[1]] >= 440 & resultados_df[[1]] <= 450, c(1,i)]
+      max_gtdt <- resultados_df[resultados_df[[1]] >= (440 - pv_tolerance[2]) & resultados_df[[1]] <= (450 + pv_tolerance[2]), c(1,i)]
       line_gtmax <- max_gtdt[which.max(max_gtdt[[2]]), ]
 
-      min_hmdt <- resultados_df[resultados_df[[1]] >= 530 & resultados_df[[1]] <= 545, c(1,i)]
+      min_hmdt <- resultados_df[resultados_df[[1]] >= (530 - pv_tolerance[3]) & resultados_df[[1]] <= (545 + pv_tolerance[3]), c(1,i)]
       line_hmmin <- min_hmdt[which.min(min_hmdt[[2]]), ]
 
-      max_hmdt <- resultados_df[resultados_df[[1]] >= 575 & resultados_df[[1]] <= 590, c(1,i)]
+      max_hmdt <- resultados_df[resultados_df[[1]] >= (575 - pv_tolerance[4]) & resultados_df[[1]] <= (590 + pv_tolerance[4]), c(1,i)]
       line_hmmax <- max_hmdt[which.max(max_hmdt[[2]]), ]
 
       base_1 <- rbind(line_gtmin, line_gtmax, line_hmmin, line_hmmax)
@@ -239,3 +239,5 @@ relation_hm_gt <- function(data = data,
 
   return(base_)
 }
+
+

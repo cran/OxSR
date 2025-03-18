@@ -8,7 +8,7 @@ relation_hm_gt(
   data = data,
   points_smoothing = 0.3,
   hm_gt_limits = list(hm = c(535, 585), gt = c(430, 460)),
-  pv_tolerance = c(1, 1, 1, 1),
+  pv_tolerance = c(0, 0, 0, 0),
   name_wave = "wave",
   plot = FALSE
 )
@@ -18,7 +18,7 @@ relation_hm_gt(
 
 \item{points_smoothing}{The number of points used for smoothing the data to reduce noise in the spectral readings. The default value is 0.3.}
 
-\item{hm_gt_limits}{A list containing the detection range values for hematite (hm) and goethite (gt). The default is \code{list(hem = c(535, 585), gt = c(430, 460))}.}
+\item{hm_gt_limits}{A list containing the detection range values for hematite (hm) and goethite (gt). The default is \code{list(hm = c(535, 585), gt = c(430, 460))}.}
 
 \item{pv_tolerance}{A numeric vector with 4 elements, each corresponding to one of the limits for hematite (hm) and goethite (gt). This value specifies the tolerance for the point values in the calculation, helping to account for small variations in the data and controlling the precision of the calculation.}
 

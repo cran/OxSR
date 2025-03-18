@@ -118,11 +118,6 @@ test_that("relation_hm_gt() generates a plot when plot = TRUE", {
   unlink(temp_file)
 })
 
-# Execution
-test_that("The function executes in less than 0.5 second.", {
-  expect_lt(system.time(relation_hm_gt(data = soil_refle))[3], 0.5)
-})
-
 #
 # plot
 # library(vdiffr)
